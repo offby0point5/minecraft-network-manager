@@ -1,0 +1,8 @@
+name: Servermanager
+version: ${project.version}
+main: com.github.offby0point5.mc.plugin.hybrid.servermanager.ServermanagerPaper
+api-version: 1.16
+prefix: server-management
+authors: [ offbyone ]
+description: Automatically create server menu, add new servers to network, check their online state
+website: https://github.com/off-by-0point5
