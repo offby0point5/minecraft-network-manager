@@ -60,5 +60,23 @@
             <version>${project.version}</version>
             <scope>compile</scope>
         </dependency>
+        <!-- json serializer -->
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.8.6</version>
+        </dependency>
+        <!-- framework for inventory server menu -->
+        <dependency>
+            <groupId>com.github.stefvanschie.inventoryframework</groupId>
+            <artifactId>IF</artifactId>
+            <version>0.9.5</version>
+        </dependency>
+        <!-- http client -->
+        <dependency>
+            <groupId>io.github.openunirest</groupId>
+            <artifactId>open-unirest-java</artifactId>
+            <version>3.3.06</version>
+        </dependency>
     </dependencies>
 </project>
