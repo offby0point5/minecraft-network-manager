@@ -7,6 +7,7 @@ import com.velocitypowered.api.event.proxy.ProxyInitializeEvent;
 import com.velocitypowered.api.event.proxy.ProxyShutdownEvent;
 import com.velocitypowered.api.plugin.Plugin;
 import com.velocitypowered.api.proxy.ProxyServer;
+import com.velocitypowered.api.proxy.server.RegisteredServer;
 import org.slf4j.Logger;
 
 @Plugin(
@@ -28,6 +29,11 @@ public class ServermanagerVelocity {
     }
 
     @Subscribe public void onProxyInitialization(ProxyInitializeEvent event) {
+        // Register all servers from config to ServerData
+        for (RegisteredServer server : proxy.getAllServers()) {
+            new ServerData(server.getServerInfo().getName(),
+                    new ServerPorts(server.getServerInfo().getAddress().getPort(), null, null));
+        }
         this.logger.info("Start REST server");
         RestServer.init(25564);
     }

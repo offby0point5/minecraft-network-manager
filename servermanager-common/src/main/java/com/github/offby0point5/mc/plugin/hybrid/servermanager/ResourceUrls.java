@@ -7,6 +7,7 @@ public class ResourceUrls {
     public static final String FLAGS = "/server/:id/flags";  // set flags for server with this ID
     public static final String GROUPS = "/server/:id/groups";  // set groups for server with this ID
     public static final String PORTS = "/server/:id/ports";  // set ports for server with this ID
+    public static final String DELETE = "/server/:id";  // unregister server with this ID
 
     public static final String UNIREST_SERVERS = SERVERS;
     public static final String UNIREST_MENU_MAIN = MENU_MAIN;
@@ -14,4 +15,5 @@ public class ResourceUrls {
     public static final String UNIREST_FLAGS = FLAGS.replace(":id", "{id}");
     public static final String UNIREST_GROUPS = GROUPS.replace(":id", "{id}");
     public static final String UNIREST_PORTS = PORTS.replace(":id", "{id}");
+    public static final String UNIREST_DELETE = DELETE.replace(":id", "{id}");
 }

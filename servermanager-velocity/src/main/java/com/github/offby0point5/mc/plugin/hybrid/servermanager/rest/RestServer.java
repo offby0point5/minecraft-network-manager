@@ -12,7 +12,7 @@ import io.swagger.v3.oas.models.info.Info;
 
 import java.util.Optional;
 
-import static io.javalin.apibuilder.ApiBuilder.get;
+import static io.javalin.apibuilder.ApiBuilder.*;
 
 public class RestServer {
     private static Javalin app = null;
@@ -37,9 +37,15 @@ public class RestServer {
                 config.registerPlugin(new OpenApiPlugin(getOpenApiOptions()));
             }).start(port);
 
-            // Routes for the API  // todo add all other resources
+            // Routes for the API
             app.routes(() -> {
                 get(ResourceUrls.SERVERS, Resources::getServers);
+                put(ResourceUrls.PORTS, Resources::putPorts);
+                put(ResourceUrls.GROUPS, Resources::putGroups);
+                put(ResourceUrls.FLAGS, Resources::putFlags);
+                delete(ResourceUrls.DELETE, Resources::deleteServer);
+                get(ResourceUrls.MENU_MAIN, Resources::getMenuMain);
+                get(ResourceUrls.MENU_GROUP, Resources::getMenuGroup);
             });
 
             // Put the original class loader back where it was.
