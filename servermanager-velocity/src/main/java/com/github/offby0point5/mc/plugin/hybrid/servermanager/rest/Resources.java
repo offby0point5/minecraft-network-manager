@@ -3,15 +3,17 @@ package com.github.offby0point5.mc.plugin.hybrid.servermanager.rest;
 import com.github.offby0point5.mc.plugin.hybrid.servermanager.*;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
+import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.server.RegisteredServer;
 import com.velocitypowered.api.proxy.server.ServerInfo;
 import io.javalin.http.Context;
 import io.javalin.plugin.openapi.annotations.*;
 
 import java.net.InetSocketAddress;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class Resources {  // todo add all other resources  // todo add request body to swagger docs
+public class Resources {  // todo add all other resources  // todo add response bodies to swagger docs
     @OpenApi(
             path = ResourceUrls.SERVERS,
             summary = "Returns all server names registered on this proxy.",
@@ -184,5 +186,56 @@ public class Resources {  // todo add all other resources  // todo add request b
         }
         // Return menu data
         ctx.json("menu_data");
+    }
+
+    // =================================================================================
+    // ============== POST == send player to server ====================================
+    @OpenApi(
+            path = ResourceUrls.SEND_PLAYER_TO_SERVER,
+            summary = "Sends the player with this name to the server with this ID.",
+            tags = {"Send players"},
+            method = HttpMethod.POST,
+            responses = {
+                    @OpenApiResponse(status = "200", content = @OpenApiContent(type = "application/json"))
+            }
+    )
+    public static void postSendPlayerServer(Context ctx) {  // todo send correct http status codes
+        String serverId = ctx.pathParam("id");
+        Optional<RegisteredServer> optionalRegisteredServer = ServermanagerVelocity.proxy.getServer(serverId);
+        String playerName = ctx.pathParam("player");
+        Optional<Player> optionalPlayer = ServermanagerVelocity.proxy.getPlayer(playerName);
+        // If server not known, abort
+        if (!(ServerData.serverNameDataMap.containsKey(serverId) && optionalRegisteredServer.isPresent())) {
+            ctx.json("server not found");
+            return;
+        }
+        // If player not known, abort
+        if (!optionalPlayer.isPresent()) {
+            ctx.json("player not found");
+            return;
+        }
+        RegisteredServer server = optionalRegisteredServer.get();
+        Player player = optionalPlayer.get();
+
+        player.createConnectionRequest(server).fireAndForget();
+        ctx.json("success");
+    }
+
+    @OpenApi(
+            path = ResourceUrls.SEND_PLAYER_TO_GROUP,
+            summary = "Sends the player with this name to the group with this ID.",
+            tags = {"Send players"},
+            method = HttpMethod.POST,
+            responses = {
+                    @OpenApiResponse(status = "200", content = @OpenApiContent(type = "application/json"))
+            }
+    )
+    public static void postSendPlayerGroup(Context ctx) {  // todo send correct http status codes
+        String groupId = ctx.pathParam("id");
+        String playerName = ctx.pathParam("player");
+        Optional<Player> optionalPlayer = ServermanagerVelocity.proxy.getPlayer(playerName);
+        // If group not known, abort
+        // todo implement
+        ctx.json("success");
     }
 }

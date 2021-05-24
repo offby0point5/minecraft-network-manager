@@ -46,6 +46,9 @@ public class RestServer {
                 delete(ResourceUrls.DELETE, Resources::deleteServer);
                 get(ResourceUrls.MENU_MAIN, Resources::getMenuMain);
                 get(ResourceUrls.MENU_GROUP, Resources::getMenuGroup);
+
+                post(ResourceUrls.SEND_PLAYER_TO_SERVER, Resources::postSendPlayerServer);
+                post(ResourceUrls.SEND_PLAYER_TO_GROUP, Resources::postSendPlayerGroup);
             });
 
             // Put the original class loader back where it was.
