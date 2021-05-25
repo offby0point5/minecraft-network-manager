@@ -12,14 +12,15 @@ public class ProxyApi {
                 .stream().map(element -> (String) element).collect(Collectors.toSet());
     }
 
-    public static void getMenuMain() {
-        // todo implement Severmenu
-        // todo implement
+    public static MenuData getMenuMain() {
+        return Unirest.get(ResourceUrls.UNIREST_MENU_MAIN)
+                .asObject(MenuData.class).getBody();
     }
 
-    public static void getMenuGroup(String groupName) {
-        // todo implement Severmenu
-        // todo implement
+    public static MenuData getMenuGroup(String groupName) {
+        return Unirest.get(ResourceUrls.UNIREST_MENU_GROUP)
+                .routeParam("id", groupName)
+                .asObject(MenuData.class).getBody();
     }
 
     // POST requests ================================================
