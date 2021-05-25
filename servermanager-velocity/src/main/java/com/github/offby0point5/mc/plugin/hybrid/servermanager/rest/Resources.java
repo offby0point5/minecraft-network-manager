@@ -1,6 +1,7 @@
 package com.github.offby0point5.mc.plugin.hybrid.servermanager.rest;
 
 import com.github.offby0point5.mc.plugin.hybrid.servermanager.*;
+import com.github.offby0point5.mc.plugin.hybrid.servermanager.groups.ServerData;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.velocitypowered.api.proxy.Player;
@@ -43,7 +44,7 @@ public class Resources {  // todo add all other resources  // todo add response 
     public static void putPorts(Context ctx) {  // todo send correct http status codes
         String serverId = ctx.pathParam("id");
         // If server already known, abort
-        if (ServerData.serverNameDataMap.containsKey(serverId)) {
+        if (ServerData.hasServer(serverId)) {
             ctx.json("exists");
             return;
         }
@@ -76,7 +77,7 @@ public class Resources {  // todo add all other resources  // todo add response 
     public static void putGroups(Context ctx) {  // todo send correct http status codes
         String serverId = ctx.pathParam("id");
         // If server not known, abort
-        if (!ServerData.serverNameDataMap.containsKey(serverId)) {
+        if (!ServerData.hasServer(serverId)) {
             ctx.json("not found");
             return;
         }
@@ -108,7 +109,7 @@ public class Resources {  // todo add all other resources  // todo add response 
     public static void putFlags(Context ctx) {  // todo send correct http status codes
         String serverId = ctx.pathParam("id");
         // If server not known, abort
-        if (!ServerData.serverNameDataMap.containsKey(serverId)) {
+        if (!ServerData.hasServer(serverId)) {
             ctx.json("not found");
             return;
         }
@@ -139,14 +140,14 @@ public class Resources {  // todo add all other resources  // todo add response 
     public static void deleteServer(Context ctx) {  // todo send correct http status codes
         String serverId = ctx.pathParam("id");
         // If server not known, abort
-        if (!ServerData.serverNameDataMap.containsKey(serverId)) {
+        if (!ServerData.hasServer(serverId)) {
             ctx.json("not found");
             return;
         }
         // Unregister and delete server
         ServermanagerVelocity.proxy.unregisterServer(new ServerInfo(serverId,
-                new InetSocketAddress(ServerData.serverNameDataMap.get(serverId).ports.game)));
-        ServerData.serverNameDataMap.remove(serverId);
+                new InetSocketAddress(ServerData.getServer(serverId).ports.game)));
+        ServerData.removeServer(serverId);
         ctx.json("success");
     }
 
@@ -205,7 +206,7 @@ public class Resources {  // todo add all other resources  // todo add response 
         String playerName = ctx.pathParam("player");
         Optional<Player> optionalPlayer = ServermanagerVelocity.proxy.getPlayer(playerName);
         // If server not known, abort
-        if (!(ServerData.serverNameDataMap.containsKey(serverId) && optionalRegisteredServer.isPresent())) {
+        if (!(ServerData.hasServer(serverId) && optionalRegisteredServer.isPresent())) {
             ctx.json("server not found");
             return;
         }

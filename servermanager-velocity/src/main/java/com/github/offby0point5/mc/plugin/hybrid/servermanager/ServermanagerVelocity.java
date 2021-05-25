@@ -1,5 +1,7 @@
 package com.github.offby0point5.mc.plugin.hybrid.servermanager;
 
+import com.github.offby0point5.mc.plugin.hybrid.servermanager.groups.GroupEvents;
+import com.github.offby0point5.mc.plugin.hybrid.servermanager.groups.ServerData;
 import com.github.offby0point5.mc.plugin.hybrid.servermanager.rest.RestServer;
 import com.google.inject.Inject;
 import com.velocitypowered.api.event.Subscribe;
@@ -29,6 +31,7 @@ public class ServermanagerVelocity {
     }
 
     @Subscribe public void onProxyInitialization(ProxyInitializeEvent event) {
+        proxy.getEventManager().register(this, new GroupEvents());
         // Register all servers from config to ServerData
         for (RegisteredServer server : proxy.getAllServers()) {
             new ServerData(server.getServerInfo().getName(),
