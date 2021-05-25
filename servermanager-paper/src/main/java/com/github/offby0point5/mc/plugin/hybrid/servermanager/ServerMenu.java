@@ -24,10 +24,13 @@ public class ServerMenu {  // todo update the menuData every X seconds
     private static OutlinePane backgroundPane = null;
     private static ChestGui gui = null;
     private static final Map<String, ChestGui> serverGroupGui = new HashMap<>();
+    private static long lastUpdated;
 
     public static final ItemStack openMenuItem;  // Item to open the navigation
 
     static {
+        lastUpdated = System.currentTimeMillis();
+
         openMenuItem = new ItemStack(Material.COMPASS);
         ItemMeta navigatorMeta = openMenuItem.getItemMeta();
         // todo make all custom item meta non italics and use TextColor for coloring
@@ -45,10 +48,17 @@ public class ServerMenu {  // todo update the menuData every X seconds
 
     public static void display(Player player){
         if (gui == null || backgroundPane == null) ServerMenu.update();
+        // Update every 10 seconds if needed
+        if (lastUpdated < (System.currentTimeMillis() - 10000)) {
+            ServerMenu.update();
+        }
         gui.show(player);
     }
 
     public static void update() {
+        // Set update time to now so the next update would happen minimum 10 seconds in future
+        lastUpdated = System.currentTimeMillis();
+
         if (backgroundPane == null) {
             ItemStack itemStack = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
             ItemMeta itemMeta = itemStack.getItemMeta();
