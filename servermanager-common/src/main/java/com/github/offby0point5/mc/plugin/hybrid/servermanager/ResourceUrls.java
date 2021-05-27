@@ -1,6 +1,8 @@
 package com.github.offby0point5.mc.plugin.hybrid.servermanager;
 
 public class ResourceUrls {
+    public static final String HOST = "http://localhost:25564";  // the host url
+
     public static final String SERVERS = "/servers";  // get all registered server IDs
     public static final String MENU_MAIN = "/menu";  // get main page server menu entries
     public static final String MENU_GROUP = "/menu/:id";  // get group page server menu entries for group with this ID

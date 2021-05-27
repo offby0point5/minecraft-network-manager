@@ -84,5 +84,16 @@
             <artifactId>open-unirest-java</artifactId>
             <version>3.3.06</version>
         </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.10.3</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.module</groupId>
+            <artifactId>jackson-module-paranamer</artifactId>
+            <version>2.10.3</version>
+        </dependency>
     </dependencies>
 </project>

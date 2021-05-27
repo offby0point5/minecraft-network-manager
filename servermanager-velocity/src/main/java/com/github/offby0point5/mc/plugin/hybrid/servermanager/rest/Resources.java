@@ -2,6 +2,7 @@ package com.github.offby0point5.mc.plugin.hybrid.servermanager.rest;
 
 import com.github.offby0point5.mc.plugin.hybrid.servermanager.*;
 import com.github.offby0point5.mc.plugin.hybrid.servermanager.groups.ServerData;
+import com.github.offby0point5.mc.plugin.hybrid.servermanager.groups.ServerGroup;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.velocitypowered.api.proxy.Player;
@@ -9,8 +10,14 @@ import com.velocitypowered.api.proxy.server.RegisteredServer;
 import com.velocitypowered.api.proxy.server.ServerInfo;
 import io.javalin.http.Context;
 import io.javalin.plugin.openapi.annotations.*;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 
 import java.net.InetSocketAddress;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -163,9 +170,17 @@ public class Resources {  // todo add all other resources  // todo add response 
             }
     )
     public static void getMenuMain(Context ctx) {  // todo send correct http status codes
-        // todo implement
-        // Return menu data
-        ctx.json("menu_data");
+        Map<String, MenuData.Entry> entryMap = new HashMap<>();
+        for (ServerGroup group : ServerGroup.getAllGroups()) {
+            entryMap.put(group.name, group.representation);
+        }
+        MenuData menuData = new MenuData(
+                new MenuData.Entry(
+                        "BIRCH_SAPLING", 1,
+                        MiniMessage.get().serialize(Component.text("Übersicht", NamedTextColor.YELLOW)),
+                        Collections.singletonList(MiniMessage.get().serialize(Component.text("Hier sind alle Servergruppen aufgelistet.", NamedTextColor.GRAY)))),
+                entryMap);
+        ctx.json(menuData);
     }
 
     @OpenApi(
@@ -179,14 +194,14 @@ public class Resources {  // todo add all other resources  // todo add response 
     )
     public static void getMenuGroup(Context ctx) {  // todo send correct http status codes
         String groupId = ctx.pathParam("id");
-        // todo implement
-        // If group not known, abort
-        if (groupId.equals("")) {
-            ctx.json("not found");
-            return;
+        Map<String, MenuData.Entry> entryMap = new HashMap<>();
+        for (ServerData serverData : ServerData.getServersInGroup(groupId)) {
+            entryMap.put(serverData.name, ServerGroup.getGroup(serverData.groups.main).representation);
         }
-        // Return menu data
-        ctx.json("menu_data");
+        MenuData menuData = new MenuData(
+                ServerGroup.getGroup(groupId).representation,
+                entryMap);
+        ctx.json(menuData);
     }
 
     // =================================================================================

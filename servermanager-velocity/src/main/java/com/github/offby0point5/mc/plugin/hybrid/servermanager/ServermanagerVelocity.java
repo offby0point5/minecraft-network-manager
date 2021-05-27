@@ -1,7 +1,6 @@
 package com.github.offby0point5.mc.plugin.hybrid.servermanager;
 
-import com.github.offby0point5.mc.plugin.hybrid.servermanager.groups.GroupEvents;
-import com.github.offby0point5.mc.plugin.hybrid.servermanager.groups.ServerData;
+import com.github.offby0point5.mc.plugin.hybrid.servermanager.groups.*;
 import com.github.offby0point5.mc.plugin.hybrid.servermanager.rest.RestServer;
 import com.google.inject.Inject;
 import com.velocitypowered.api.event.Subscribe;
@@ -10,7 +9,12 @@ import com.velocitypowered.api.event.proxy.ProxyShutdownEvent;
 import com.velocitypowered.api.plugin.Plugin;
 import com.velocitypowered.api.proxy.ProxyServer;
 import com.velocitypowered.api.proxy.server.RegisteredServer;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.slf4j.Logger;
+
+import java.util.Collections;
 
 @Plugin(
         id = "servermanager-velocity",
@@ -31,6 +35,16 @@ public class ServermanagerVelocity {
     }
 
     @Subscribe public void onProxyInitialization(ProxyInitializeEvent event) {
+        // Create standard groups // todo add those to config
+        ServerGroup.getInstance("lobby", StandardJoinRule.LEAST, StandardKickRule.KICK_PROXY,
+                new MenuData.Entry("RED_BED", 1,
+                        MiniMessage.get().serialize(Component.text("Lobby", NamedTextColor.GREEN)),
+                        Collections.emptyList()));
+        ServerGroup.getInstance("random", StandardJoinRule.RANDOM, StandardKickRule.KICK_TO_LOBBY,
+                new MenuData.Entry("DRAGON_EGG", 1,
+                        MiniMessage.get().serialize(Component.text("Zufälliger Server", NamedTextColor.LIGHT_PURPLE)),
+                        Collections.singletonList(MiniMessage.get().serialize(Component.text("Leitet dich auf einen zufälligen Server weiter", NamedTextColor.GRAY)))));
+        // todo servers that are added by proxy config -> add them to groups by config
         proxy.getEventManager().register(this, new GroupEvents());
         // Register all servers from config to ServerData
         for (RegisteredServer server : proxy.getAllServers()) {

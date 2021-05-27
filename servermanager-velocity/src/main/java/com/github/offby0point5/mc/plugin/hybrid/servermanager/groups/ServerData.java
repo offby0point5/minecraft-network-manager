@@ -13,8 +13,8 @@ public class ServerData {
 
     public final String name;
     public final ServerPorts ports;
-    public ServerGroups groups;
-    public ServerFlags flags;
+    public ServerGroups groups = new ServerGroups("none");
+    public ServerFlags flags = new ServerFlags();
     // todo add server ping data and refresh it every X seconds
 
     public ServerData(String serverId, ServerPorts ports) {

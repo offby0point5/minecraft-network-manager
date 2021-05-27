@@ -12,6 +12,11 @@ import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -20,7 +25,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class ServerMenu {  // todo update the menuData every X seconds
+public class ServerMenu implements Listener {
     private static OutlinePane backgroundPane = null;
     private static ChestGui gui = null;
     private static final Map<String, ChestGui> serverGroupGui = new HashMap<>();
@@ -36,10 +41,8 @@ public class ServerMenu {  // todo update the menuData every X seconds
         // todo make all custom item meta non italics and use TextColor for coloring
         TextComponent itemDisplayName = Component.text(
                 "Serverauswahl",
-                TextColor.color(100, 255, 0));
-        itemDisplayName = itemDisplayName.decoration(TextDecoration.ITALIC, false);
-        System.out.println(itemDisplayName);  // todo remove
-        System.out.println(itemDisplayName.color()); // todo remove
+                TextColor.color(100, 255, 0))
+                .decoration(TextDecoration.ITALIC, false);
         navigatorMeta.addItemFlags(ItemFlag.values());  // hide all item flags
         navigatorMeta.displayName(itemDisplayName);
         navigatorMeta.setUnbreakable(true);
@@ -47,11 +50,9 @@ public class ServerMenu {  // todo update the menuData every X seconds
     }
 
     public static void display(Player player){
-        if (gui == null || backgroundPane == null) ServerMenu.update();
+        if (gui == null || backgroundPane == null) update();
         // Update every 10 seconds if needed
-        if (lastUpdated < (System.currentTimeMillis() - 10000)) {
-            ServerMenu.update();
-        }
+        if (lastUpdated < (System.currentTimeMillis() - 10000)) update();
         gui.show(player);
     }
 
@@ -65,15 +66,15 @@ public class ServerMenu {  // todo update the menuData every X seconds
             itemMeta.displayName(Component.empty());
             itemStack.setItemMeta(itemMeta);
             GuiItem backgroundItem = new GuiItem(itemStack);
-            backgroundPane = new OutlinePane(0, 0, 9, 7, Pane.Priority.LOWEST);
+            backgroundPane = new OutlinePane(0, 0, 9, 6, Pane.Priority.LOWEST);
             backgroundPane.addItem(backgroundItem);
             backgroundPane.setRepeat(true);
         }
 
-        gui = new ChestGui(7, "Servermenü");
+        gui = new ChestGui(6, "Servermenü");
         gui.setOnGlobalClick(event -> event.setCancelled(true));
-        StaticPane headerPane = new StaticPane(0, 0, 1, 1);
-        OutlinePane mainPane = new OutlinePane(1, 3, 7, 3);
+        StaticPane headerPane = new StaticPane(4, 0, 1, 1, Pane.Priority.HIGHEST);
+        OutlinePane mainPane = new OutlinePane(1, 2, 7, 3, Pane.Priority.MONITOR);
         mainPane.setGap(1);
         gui.addPane(backgroundPane);
         gui.addPane(headerPane);
@@ -91,9 +92,12 @@ public class ServerMenu {  // todo update the menuData every X seconds
         ItemMeta headerMeta = headerItem.getItemMeta();
         headerMeta.addItemFlags(ItemFlag.values());
         // set display name and item lore
-        headerMeta.displayName(MiniMessage.get().parse(headerEntry.displayName));
-        headerMeta.lore(headerEntry.lore.stream().map(str -> MiniMessage.get().parse(str)).collect(Collectors.toList()));
-        headerPane.addItem(new GuiItem(headerItem), 1, 1);
+        headerMeta.displayName(MiniMessage.get().parse(headerEntry.displayName)
+                .decoration(TextDecoration.ITALIC, false));
+        headerMeta.lore(headerEntry.lore.stream().map(str -> MiniMessage.get().parse(str)
+                .decoration(TextDecoration.ITALIC, false)).collect(Collectors.toList()));
+        headerItem.setItemMeta(headerMeta);
+        headerPane.addItem(new GuiItem(headerItem), 0, 0);
         // ====================================================================
 
         for (Map.Entry<String, MenuData.Entry> groupDataEntry : mainMenuData.entries.entrySet()) {
@@ -108,9 +112,11 @@ public class ServerMenu {  // todo update the menuData every X seconds
             ItemMeta itemMeta = groupItem.getItemMeta();
             itemMeta.addItemFlags(ItemFlag.values());
             // set display name
-            itemMeta.displayName(MiniMessage.get().parse(groupEntry.displayName));
+            itemMeta.displayName(MiniMessage.get().parse(groupEntry.displayName)
+                .decoration(TextDecoration.ITALIC, false));
             // set item lore
-            itemMeta.lore(groupEntry.lore.stream().map(str -> MiniMessage.get().parse(str)).collect(Collectors.toList()));
+            itemMeta.lore(groupEntry.lore.stream().map(str -> MiniMessage.get().parse(str)
+                .decoration(TextDecoration.ITALIC, false)).collect(Collectors.toList()));
             // todo add glowing to current server group
             groupItem.setItemMeta(itemMeta);
             mainPane.addItem(new GuiItem(groupItem, event -> {
@@ -129,14 +135,14 @@ public class ServerMenu {  // todo update the menuData every X seconds
             // ---- Get group menu data ------------
             MenuData groupMenuData = ProxyApi.getMenuGroup(groupName);
             // ---- Build group GUI ----------------
-            ChestGui groupServersGui = new ChestGui(7, "Servermenü -> "+groupName);
+            ChestGui groupServersGui = new ChestGui(6, "Servermenü -> "+groupName);
             groupServersGui.setOnGlobalClick(event -> event.setCancelled(true));
-            StaticPane groupHeaderPane = new StaticPane(0, 0, 1, 1);
-            OutlinePane groupMainPane = new OutlinePane(1, 3, 7, 3);
+            StaticPane groupHeaderPane = new StaticPane(4, 0, 1, 1, Pane.Priority.HIGHEST);
+            OutlinePane groupMainPane = new OutlinePane(1, 2, 7, 3, Pane.Priority.MONITOR);
             groupMainPane.setGap(1);
             groupServersGui.addPane(backgroundPane);
-            groupServersGui.addPane(groupHeaderPane);
             groupServersGui.addPane(groupMainPane);
+            groupServersGui.addPane(groupHeaderPane);
             serverGroupGui.put(groupName, groupServersGui);
 
             // ==== Add header item ==============================================
@@ -148,9 +154,18 @@ public class ServerMenu {  // todo update the menuData every X seconds
             ItemMeta groupHeaderMeta = groupHeaderItem.getItemMeta();
             groupHeaderMeta.addItemFlags(ItemFlag.values());
             // set display name and item lore
-            groupHeaderMeta.displayName(MiniMessage.get().parse(groupHeaderEntry.displayName));
-            groupHeaderMeta.lore(groupHeaderEntry.lore.stream().map(str -> MiniMessage.get().parse(str)).collect(Collectors.toList()));
-            groupHeaderPane.addItem(new GuiItem(groupHeaderItem), 1, 1);
+            groupHeaderMeta.displayName(MiniMessage.get().parse(groupHeaderEntry.displayName)
+                .decoration(TextDecoration.ITALIC, false));
+            groupHeaderMeta.lore(groupHeaderEntry.lore.stream().map(str -> MiniMessage.get().parse(str)
+                .decoration(TextDecoration.ITALIC, false)).collect(Collectors.toList()));
+            groupHeaderItem.setItemMeta(groupHeaderMeta);
+            groupHeaderPane.addItem(new GuiItem(groupHeaderItem, event -> {
+                switch (event.getClick()){
+                    case LEFT:  // left or right click
+                    case RIGHT:  // show the main GUI
+                        gui.show(event.getWhoClicked());
+                }
+            }), 0, 0);
             // ====================================================================
 
             for (Map.Entry<String, MenuData.Entry> serverDataEntry : groupMenuData.entries.entrySet()) {
@@ -166,9 +181,11 @@ public class ServerMenu {  // todo update the menuData every X seconds
                 ItemMeta serverItemMeta = serverItem.getItemMeta();
                 serverItemMeta.addItemFlags(ItemFlag.values());
                 // set display name
-                serverItemMeta.displayName(MiniMessage.get().parse(serverEntry.displayName));
+                serverItemMeta.displayName(MiniMessage.get().parse(serverEntry.displayName)
+                .decoration(TextDecoration.ITALIC, false));
                 // set item lore
-                serverItemMeta.lore(serverEntry.lore.stream().map(str -> MiniMessage.get().parse(str)).collect(Collectors.toList()));
+                serverItemMeta.lore(serverEntry.lore.stream().map(str -> MiniMessage.get().parse(str)
+                .decoration(TextDecoration.ITALIC, false)).collect(Collectors.toList()));
                 // todo add glowing to current server
                 serverItem.setItemMeta(serverItemMeta);
                 groupMainPane.addItem(new GuiItem(serverItem, event -> {
@@ -181,5 +198,27 @@ public class ServerMenu {  // todo update the menuData every X seconds
                 // ====================================================================
             }
         }
+    }
+
+    // ==== Event listener ============================================================
+    @EventHandler
+    public static void onInteract(PlayerInteractEvent event) {
+        if (!openMenuItem.equals(event.getItem())) return;
+        // If item is the server menu opener, open the menu
+        display(event.getPlayer());
+        event.setCancelled(true);
+    }
+
+    @EventHandler
+    public static void onPlayerJoin(PlayerJoinEvent event) {
+        if (event.getPlayer().getInventory().contains(openMenuItem)) return;
+        if (event.getPlayer().getInventory().contains(openMenuItem)) return;
+        event.getPlayer().getInventory().addItem(openMenuItem);
+    }
+
+    @EventHandler
+    public static void onPlayerDropItem(PlayerDropItemEvent event) {
+        if (openMenuItem.equals(event.getItemDrop().getItemStack()))
+            event.setCancelled(true);
     }
 }

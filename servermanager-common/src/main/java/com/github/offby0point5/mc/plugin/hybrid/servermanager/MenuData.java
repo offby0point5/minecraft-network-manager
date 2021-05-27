@@ -8,7 +8,7 @@ public class MenuData {
     public final Entry headerEntry;
     public final Map<String, Entry> entries = new HashMap<>();  // server/group name -> displaying item
 
-    public MenuData(Entry headerEntry, HashMap<String, Entry> entries) {
+    public MenuData(Entry headerEntry, Map<String, Entry> entries) {
         this.headerEntry = headerEntry;
         this.entries.putAll(entries);
     }
