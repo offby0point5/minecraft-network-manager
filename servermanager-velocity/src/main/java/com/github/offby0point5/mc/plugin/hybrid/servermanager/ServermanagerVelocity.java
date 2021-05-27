@@ -37,7 +37,7 @@ public class ServermanagerVelocity {
     @Subscribe public void onProxyInitialization(ProxyInitializeEvent event) {
         // Create standard groups // todo add those to config
         ServerGroup.getInstance("lobby", StandardJoinRule.LEAST, StandardKickRule.KICK_PROXY,
-                new MenuData.Entry("RED_BED", 1,
+                new MenuData.Entry("MAGMA_CREAM", 1,
                         MiniMessage.get().serialize(Component.text("Lobby", NamedTextColor.GREEN)),
                         Collections.emptyList()));
         ServerGroup.getInstance("random", StandardJoinRule.RANDOM, StandardKickRule.KICK_TO_LOBBY,

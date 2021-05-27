@@ -11,6 +11,7 @@ import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -38,7 +39,6 @@ public class ServerMenu implements Listener {
 
         openMenuItem = new ItemStack(Material.COMPASS);
         ItemMeta navigatorMeta = openMenuItem.getItemMeta();
-        // todo make all custom item meta non italics and use TextColor for coloring
         TextComponent itemDisplayName = Component.text(
                 "Serverauswahl",
                 TextColor.color(100, 255, 0))
@@ -117,7 +117,9 @@ public class ServerMenu implements Listener {
             // set item lore
             itemMeta.lore(groupEntry.lore.stream().map(str -> MiniMessage.get().parse(str)
                 .decoration(TextDecoration.ITALIC, false)).collect(Collectors.toList()));
-            // todo add glowing to current server group
+            // add glowing to current server group
+            if (ServermanagerPaper.mainGroup.equals(groupName))
+                itemMeta.addEnchant(Enchantment.DIG_SPEED, 1, true);
             groupItem.setItemMeta(itemMeta);
             mainPane.addItem(new GuiItem(groupItem, event -> {
                 switch (event.getClick()){
@@ -186,7 +188,9 @@ public class ServerMenu implements Listener {
                 // set item lore
                 serverItemMeta.lore(serverEntry.lore.stream().map(str -> MiniMessage.get().parse(str)
                 .decoration(TextDecoration.ITALIC, false)).collect(Collectors.toList()));
-                // todo add glowing to current server
+                // add glowing to current server
+                if (ServermanagerPaper.serverName.equals(serverName))
+                    serverItemMeta.addEnchant(Enchantment.DIG_SPEED, 1, true);
                 serverItem.setItemMeta(serverItemMeta);
                 groupMainPane.addItem(new GuiItem(serverItem, event -> {
                     switch (event.getClick()){
