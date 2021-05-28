@@ -39,11 +39,12 @@ public class ServermanagerVelocity {
         ServerGroup.getInstance("lobby", StandardJoinRule.LEAST, StandardKickRule.KICK_PROXY,
                 new MenuData.Entry("MAGMA_CREAM", 1,
                         MiniMessage.get().serialize(Component.text("Lobby", NamedTextColor.GREEN)),
-                        Collections.emptyList()));
+                        Collections.emptyList(), 10, MenuData.Status.ONLINE));
         ServerGroup.getInstance("random", StandardJoinRule.RANDOM, StandardKickRule.KICK_TO_LOBBY,
                 new MenuData.Entry("DRAGON_EGG", 1,
                         MiniMessage.get().serialize(Component.text("Zufälliger Server", NamedTextColor.LIGHT_PURPLE)),
-                        Collections.singletonList(MiniMessage.get().serialize(Component.text("Leitet dich auf einen zufälligen Server weiter", NamedTextColor.GRAY)))));
+                        Collections.singletonList(MiniMessage.get().serialize(Component.text("Leitet dich auf einen zufälligen Server weiter", NamedTextColor.GRAY))),
+                        0, MenuData.Status.ONLINE));
         // todo servers that are added by proxy config -> add them to groups by config
         proxy.getEventManager().register(this, new GroupEvents());
         // Register all servers from config to ServerData

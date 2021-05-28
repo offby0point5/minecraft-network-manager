@@ -22,8 +22,7 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class ServerMenu implements Listener {
@@ -82,6 +81,7 @@ public class ServerMenu implements Listener {
 
         // ---- get main menu data ---------
         MenuData mainMenuData = ProxyApi.getMenuMain();
+        sortEntries(mainMenuData);
 
         // ==== Add header item ==============================================
         MenuData.Entry headerEntry = mainMenuData.headerEntry;
@@ -136,6 +136,7 @@ public class ServerMenu implements Listener {
 
             // ---- Get group menu data ------------
             MenuData groupMenuData = ProxyApi.getMenuGroup(groupName);
+            sortEntries(groupMenuData);
             // ---- Build group GUI ----------------
             ChestGui groupServersGui = new ChestGui(6, "Servermenü -> "+groupName);
             groupServersGui.setOnGlobalClick(event -> event.setCancelled(true));
@@ -201,6 +202,16 @@ public class ServerMenu implements Listener {
                 }));
                 // ====================================================================
             }
+        }
+    }
+
+    public static void sortEntries(MenuData menuData) {
+        List<Map.Entry<String, MenuData.Entry>> entryList = new LinkedList<>(menuData.entries.entrySet());
+        entryList.sort(Comparator.comparing(l -> l.getValue().priority));
+
+        menuData.entries.clear();  // clear and fill in sorted order
+        for (Map.Entry<String, MenuData.Entry> newEntry : entryList) {
+            menuData.entries.put(newEntry.getKey(), newEntry.getValue());
         }
     }
 

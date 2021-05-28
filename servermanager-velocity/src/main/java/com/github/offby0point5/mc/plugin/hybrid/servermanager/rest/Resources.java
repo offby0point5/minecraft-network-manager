@@ -178,7 +178,8 @@ public class Resources {  // todo add all other resources  // todo add response 
                 new MenuData.Entry(
                         "BIRCH_SAPLING", 1,
                         MiniMessage.get().serialize(Component.text("Übersicht", NamedTextColor.YELLOW)),
-                        Collections.singletonList(MiniMessage.get().serialize(Component.text("Hier sind alle Servergruppen aufgelistet.", NamedTextColor.GRAY)))),
+                        Collections.singletonList(MiniMessage.get().serialize(Component.text("Hier sind alle Servergruppen aufgelistet.", NamedTextColor.GRAY))),
+                        0, MenuData.Status.ONLINE),
                 entryMap);
         ctx.json(menuData);
     }
