@@ -227,7 +227,6 @@ public class ServerMenu implements Listener {
     @EventHandler
     public static void onPlayerJoin(PlayerJoinEvent event) {
         if (event.getPlayer().getInventory().contains(openMenuItem)) return;
-        if (event.getPlayer().getInventory().contains(openMenuItem)) return;
         event.getPlayer().getInventory().addItem(openMenuItem);
     }
 

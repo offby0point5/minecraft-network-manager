@@ -26,12 +26,14 @@ import java.util.Collections;
 )
 public class ServermanagerVelocity {
 
-    private final Logger logger;
+    public final Logger logger;
     public static ProxyServer proxy;
+    public static ServermanagerVelocity plugin;
 
     @Inject public ServermanagerVelocity(ProxyServer proxyServer, Logger logger) {
         this.logger = logger;
         proxy = proxyServer;
+        plugin = this;
     }
 
     @Subscribe public void onProxyInitialization(ProxyInitializeEvent event) {
