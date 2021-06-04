@@ -12,11 +12,12 @@ import java.net.ConnectException;
 import java.net.InetSocketAddress;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 public class ServerData {
-    private static final HashMap<String, ServerData> serverNameDataMap = new HashMap<>();
+    private static final Map<String, ServerData> serverNameDataMap = new HashMap<>();
 
     public final String name;
     public final ServerPorts ports;
