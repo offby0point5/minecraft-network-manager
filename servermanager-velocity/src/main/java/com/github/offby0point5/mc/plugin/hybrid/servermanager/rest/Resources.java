@@ -172,6 +172,10 @@ public class Resources {  // todo add all other resources  // todo add response 
     public static void getMenuMain(Context ctx) {  // todo send correct http status codes
         Map<String, MenuData.Entry> entryMap = new HashMap<>();
         for (ServerGroup group : ServerGroup.getAllGroups()) {
+            if (group.representation == null) {
+                ServermanagerVelocity.plugin.logger.warn("Group " + group.name + " has no representation!");
+                continue;
+            }
             entryMap.put(group.name, group.representation);
         }
         MenuData menuData = new MenuData(
@@ -197,6 +201,10 @@ public class Resources {  // todo add all other resources  // todo add response 
         String groupId = ctx.pathParam("id");
         Map<String, MenuData.Entry> entryMap = new HashMap<>();
         for (ServerData serverData : ServerData.getServersInGroup(groupId)) {
+            if (ServerGroup.getGroup(serverData.groups.main).representation == null) {
+                ServermanagerVelocity.plugin.logger.warn("Server " +serverData.groups.main + " has no representation!");
+                continue;
+            }
             entryMap.put(serverData.name, ServerGroup.getGroup(serverData.groups.main).representation);
         }
         MenuData menuData = new MenuData(

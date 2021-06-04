@@ -1,0 +1,37 @@
+# Settings for the REST API
+[restapi]
+bind = "0.0.0.0:25564"
+
+[servers]
+[servers.lobby0]
+main = "lobby"
+groups = ["lobby", "random"]
+
+[groups]
+[groups.lobby]
+join-rule = "LEAST"
+kick-rule = "KICK_TO_LOBBY"
+[groups.lobby.menu-item]
+item-material = "MAGMA_CREAM"
+item-amount = 1
+display-name = "<green>Lobby</green>"
+lore = [
+    "<gray>Willkommen auf dem Netzwerk</gray>",
+    "<rainbow>Hab Spaß!</rainbow>"
+]
+priority = 10
+status = "ONLINE"
+
+[groups.random]
+join-rule = "RANDOM"
+kick-rule = "KICK_TO_LOBBY"
+[groups.random.menu-item]
+item-material = "DRAGON_EGG"
+item-amount = 1
+display-name = "<blue>Zufälliger Server</blue>"
+lore = [
+    "<gray>Wirft dich auf einen</gray>",
+    "<gray>zufälligen Server</gray>"
+]
+priority = 1
+status = "ONLINE"

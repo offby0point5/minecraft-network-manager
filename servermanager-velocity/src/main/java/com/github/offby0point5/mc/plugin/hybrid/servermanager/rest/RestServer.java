@@ -17,11 +17,7 @@ import static io.javalin.apibuilder.ApiBuilder.*;
 public class RestServer {
     private static Javalin app = null;
 
-    public static int getPort() {
-        return app.port();
-    }
-
-    public static void init(int port) {
+    public static void init(String host, int port) {
         if (app == null) {
             // Get the current class loader.
             ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
@@ -35,7 +31,7 @@ public class RestServer {
                 config.defaultContentType = "application/json";
                 config.showJavalinBanner = false;
                 config.registerPlugin(new OpenApiPlugin(getOpenApiOptions()));
-            }).start(port);
+            }).start(host, port);
 
             // Routes for the API
             app.routes(() -> {

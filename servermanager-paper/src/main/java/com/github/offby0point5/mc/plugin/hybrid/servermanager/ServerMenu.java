@@ -118,7 +118,7 @@ public class ServerMenu implements Listener {
             itemMeta.lore(groupEntry.lore.stream().map(str -> MiniMessage.get().parse(str)
                 .decoration(TextDecoration.ITALIC, false)).collect(Collectors.toList()));
             // add glowing to current server group
-            if (ServermanagerPaper.mainGroup.equals(groupName))
+            if (ServermanagerPaper.config.getMainGroup().equals(groupName))
                 itemMeta.addEnchant(Enchantment.DIG_SPEED, 1, true);
             groupItem.setItemMeta(itemMeta);
             mainPane.addItem(new GuiItem(groupItem, event -> {
@@ -190,7 +190,7 @@ public class ServerMenu implements Listener {
                 serverItemMeta.lore(serverEntry.lore.stream().map(str -> MiniMessage.get().parse(str)
                 .decoration(TextDecoration.ITALIC, false)).collect(Collectors.toList()));
                 // add glowing to current server
-                if (ServermanagerPaper.serverName.equals(serverName))
+                if (ServermanagerPaper.config.getName().equals(serverName))
                     serverItemMeta.addEnchant(Enchantment.DIG_SPEED, 1, true);
                 serverItem.setItemMeta(serverItemMeta);
                 groupMainPane.addItem(new GuiItem(serverItem, event -> {

@@ -169,10 +169,6 @@
             <url>https://libraries.minecraft.net/</url>
         </repository>
         <repository>
-            <id>spongepowered-repo</id>
-            <url>https://repo.spongepowered.org/maven</url>
-        </repository>
-        <repository>
             <id>sonatype</id>
             <url>https://oss.sonatype.org/content/groups/public/</url>
         </repository>
@@ -224,6 +220,17 @@
             <groupId>com.github.Pequla</groupId>
             <artifactId>ServerPing</artifactId>
             <version>1.0</version>
+        </dependency>
+        <!-- PluginConfiguration library -->
+        <dependency>
+            <groupId>com.electronwill.night-config</groupId>
+            <artifactId>core</artifactId>
+            <version>3.6.3</version>
+        </dependency>
+        <dependency>
+            <groupId>com.electronwill.night-config</groupId>
+            <artifactId>toml</artifactId>
+            <version>3.6.3</version>
         </dependency>
     </dependencies>
 </project>
