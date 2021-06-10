@@ -6,6 +6,7 @@ import com.github.offby0point5.mc.plugin.hybrid.servermanager.ServerPorts;
 import com.github.offby0point5.mc.plugin.hybrid.servermanager.ServermanagerVelocity;
 import com.pequla.server.ping.ServerPing;
 import com.pequla.server.ping.StatusResponse;
+import com.velocitypowered.api.proxy.server.ServerInfo;
 
 import java.io.IOException;
 import java.net.ConnectException;
@@ -18,6 +19,7 @@ import java.util.concurrent.TimeUnit;
 
 public class ServerData {
     private static final Map<String, ServerData> serverNameDataMap = new HashMap<>();
+    private static final Map<String, Integer> serverPingFailCounters = new HashMap<>();
 
     public final String name;
     public final ServerPorts ports;
@@ -26,16 +28,25 @@ public class ServerData {
 
     static {
         ServermanagerVelocity.proxy.getScheduler().buildTask(ServermanagerVelocity.plugin, () -> {
-            // todo add server ping data and refresh it every X seconds
             for (ServerData server : serverNameDataMap.values()) {
+                if (server.name.equals("fallback")) return;  // do not ping fallback server
                 InetSocketAddress address = new InetSocketAddress(server.ports.game);
                 try {
                     ServerPing serverPing = new ServerPing(address);
                     StatusResponse response = serverPing.fetchData();
-                    // todo use the response data for ServerData
-                    ServermanagerVelocity.plugin.logger.info("Server "+address+" online."); // todo remove
+                    // todo use the response data for ServerData (maybe use it from servers directly)
+                    ServermanagerVelocity.plugin.logger.debug("Server "+address+" online.");
+                    serverPingFailCounters.put(server.name, 0);
                 } catch (ConnectException e) {
-                    ServermanagerVelocity.plugin.logger.warn("Server "+address+" not reachable."); // todo remove
+                    ServermanagerVelocity.plugin.logger.warn("Server "+address+" not reachable.");
+                    // remove server if more than 3 times not reachable
+                    serverPingFailCounters.putIfAbsent(server.name, 0);
+                    serverPingFailCounters.computeIfPresent(server.name, (__, v) -> v+1);
+                    if (serverPingFailCounters.get(server.name) > 3) {
+                        serverPingFailCounters.remove(server.name);
+                        removeServer(server.name);
+                        ServermanagerVelocity.proxy.unregisterServer(new ServerInfo(server.name, address));
+                    }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
