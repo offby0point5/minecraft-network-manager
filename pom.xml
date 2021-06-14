@@ -50,5 +50,6 @@
         <module>servermanager-common</module>
         <module>servermanager-paper</module>
         <module>servermanager-velocity</module>
+        <module>servermanager-bungee</module>
     </modules>
 </project>
