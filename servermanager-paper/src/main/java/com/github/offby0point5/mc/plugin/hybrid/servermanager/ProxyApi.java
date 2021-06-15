@@ -45,11 +45,13 @@ public class ProxyApi {
                 .stream().map(element -> (String) element).collect(Collectors.toSet());
     }
 
+    @Deprecated
     public static MenuData getMenuMain() {
         return Unirest.get(ResourceUrls.HOST+ResourceUrls.UNIREST_MENU_MAIN)
                 .asObject(MenuData.class).getBody();
     }
 
+    @Deprecated
     public static MenuData getMenuGroup(String groupName) {
         return Unirest.get(ResourceUrls.HOST+ResourceUrls.UNIREST_MENU_GROUP)
                 .routeParam("id", groupName)

@@ -34,10 +34,12 @@ public class RestServer {
             // Routes for the API
             app.routes(() -> {
                 get(ResourceUrls.SERVERS, Resources::getServers);
+
                 put(ResourceUrls.PORTS, Resources::putPorts);
                 put(ResourceUrls.GROUPS, Resources::putGroups);
                 put(ResourceUrls.FLAGS, Resources::putFlags);
                 delete(ResourceUrls.DELETE, Resources::deleteServer);
+
                 get(ResourceUrls.MENU_MAIN, Resources::getMenuMain);
                 get(ResourceUrls.MENU_GROUP, Resources::getMenuGroup);
 

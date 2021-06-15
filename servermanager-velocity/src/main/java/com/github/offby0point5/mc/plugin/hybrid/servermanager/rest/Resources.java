@@ -159,6 +159,7 @@ public class Resources {  // todo add all other resources  // todo add response 
 
     // =================================================================================
     // ============== GET == server menu entries =======================================
+    @Deprecated
     @OpenApi(
             path = ResourceUrls.MENU_MAIN,
             summary = "Returns the data necessary for a inventory main server menu.",
@@ -187,6 +188,7 @@ public class Resources {  // todo add all other resources  // todo add response 
         ctx.json(menuData);
     }
 
+    @Deprecated
     @OpenApi(
             path = ResourceUrls.MENU_GROUP,
             summary = "Returns the data necessary for a inventory group server menu for group with this ID.",
