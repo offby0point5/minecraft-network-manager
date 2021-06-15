@@ -13,8 +13,10 @@ import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
-import java.net.InetSocketAddress;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 public class Resources {  // todo add all other resources  // todo add response bodies to swagger docs
     @OpenApi(
@@ -243,7 +245,10 @@ public class Resources {  // todo add all other resources  // todo add response 
         String playerName = ctx.pathParam("player");
         ProxiedPlayer player = ServermanagerBungee.proxy.getPlayer(playerName);
         // If group not known, abort
-        // todo implement
+        ServerGroup group = ServerGroup.getGroup(groupId);
+        if (group == null) return;
+        ServerInfo server = group.getJoinServer(player);
+        player.connect(server);
         ctx.json("success");
     }
 }

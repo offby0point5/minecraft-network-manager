@@ -234,7 +234,7 @@ public class Resources {  // todo add all other resources  // todo add response 
             return;
         }
         // If player not known, abort
-        if (!optionalPlayer.isPresent()) {
+        if (optionalPlayer.isEmpty()) {
             ctx.json("player not found");
             return;
         }
@@ -259,7 +259,11 @@ public class Resources {  // todo add all other resources  // todo add response 
         String playerName = ctx.pathParam("player");
         Optional<Player> optionalPlayer = ServermanagerVelocity.proxy.getPlayer(playerName);
         // If group not known, abort
-        // todo implement
+        ServerGroup group = ServerGroup.getGroup(groupId);
+        if (group == null || optionalPlayer.isEmpty()) return;
+        Player player = optionalPlayer.get();
+        RegisteredServer server = group.getJoinServer(player);
+        player.createConnectionRequest(server).fireAndForget();
         ctx.json("success");
     }
 }
