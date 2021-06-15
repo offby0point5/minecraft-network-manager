@@ -14,7 +14,6 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 
-import java.net.InetSocketAddress;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -43,7 +42,7 @@ public class Resources {  // todo add all other resources  // todo add response 
             summary = "Put port numbers for the server with this id.",
             tags = {"Set server data"},
             method = HttpMethod.PUT,
-            requestBody = @OpenApiRequestBody(content = {@OpenApiContent(from = ServerPorts.class)}),
+            requestBody = @OpenApiRequestBody(content = {@OpenApiContent(from = ServerAddresses.class)}),
             responses = {
                     @OpenApiResponse(status = "200", content = @OpenApiContent(type = "application/json"))
             }
@@ -57,14 +56,14 @@ public class Resources {  // todo add all other resources  // todo add response 
         }
         // Try parse ports object
         try {
-            ServerPorts ports = new Gson().fromJson(ctx.body(), ServerPorts.class);
+            ServerAddresses ports = new Gson().fromJson(ctx.body(), ServerAddresses.class);
             if (ports == null) {
                 ctx.json("invalid object");
                 return;
             }
             // If object is correctly deserialized, register new server
             new ServerData(serverId, ports);
-            ServermanagerVelocity.proxy.registerServer(new ServerInfo(serverId, new InetSocketAddress(ports.game)));
+            ServermanagerVelocity.proxy.registerServer(new ServerInfo(serverId, ports.game));
             ctx.json("success");
         } catch (JsonSyntaxException e) {
             ctx.json("invalid object");
@@ -153,7 +152,7 @@ public class Resources {  // todo add all other resources  // todo add response 
         }
         // Unregister and delete server
         ServermanagerVelocity.proxy.unregisterServer(new ServerInfo(serverId,
-                new InetSocketAddress(ServerData.getServer(serverId).ports.game)));
+                ServerData.getServer(serverId).ports.game));
         ServerData.removeServer(serverId);
         ctx.json("success");
     }

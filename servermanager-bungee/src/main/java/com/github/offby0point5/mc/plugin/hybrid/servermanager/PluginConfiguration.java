@@ -5,7 +5,6 @@ import com.electronwill.nightconfig.core.UnmodifiableConfig;
 import com.electronwill.nightconfig.core.file.CommentedFileConfig;
 import com.github.offby0point5.mc.plugin.hybrid.servermanager.groups.*;
 import net.md_5.bungee.api.config.ServerInfo;
-import net.md_5.bungee.api.connection.Server;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -94,7 +93,7 @@ public class PluginConfiguration {
             // Add all servers from velocity config
             for (ServerInfo serverInfo : ServermanagerBungee.proxy.getServers().values()) {
                 new ServerData(serverInfo.getName(),
-                        new ServerPorts(serverInfo.getAddress().getPort(), null, null));
+                        new ServerAddresses(serverInfo.getAddress(), null, null));
 
             }
 

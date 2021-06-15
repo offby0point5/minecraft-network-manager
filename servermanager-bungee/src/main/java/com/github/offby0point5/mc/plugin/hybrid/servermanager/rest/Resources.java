@@ -38,7 +38,7 @@ public class Resources {  // todo add all other resources  // todo add response 
             summary = "Put port numbers for the server with this id.",
             tags = {"Set server data"},
             method = HttpMethod.PUT,
-            requestBody = @OpenApiRequestBody(content = {@OpenApiContent(from = ServerPorts.class)}),
+            requestBody = @OpenApiRequestBody(content = {@OpenApiContent(from = ServerAddresses.class)}),
             responses = {
                     @OpenApiResponse(status = "200", content = @OpenApiContent(type = "application/json"))
             }
@@ -52,7 +52,7 @@ public class Resources {  // todo add all other resources  // todo add response 
         }
         // Try parse ports object
         try {
-            ServerPorts ports = new Gson().fromJson(ctx.body(), ServerPorts.class);
+            ServerAddresses ports = new Gson().fromJson(ctx.body(), ServerAddresses.class);
             if (ports == null) {
                 ctx.json("invalid object");
                 return;
@@ -60,7 +60,7 @@ public class Resources {  // todo add all other resources  // todo add response 
             // If object is correctly deserialized, register new server
             new ServerData(serverId, ports);
             ServerInfo serverInfo = ServermanagerBungee.proxy.constructServerInfo(
-                    serverId, new InetSocketAddress(ports.game), "", false);
+                    serverId, ports.game, "", false);
             ServermanagerBungee.proxy.getServers().put(serverInfo.getName(), serverInfo);
             ctx.json("success");
         } catch (JsonSyntaxException e) {

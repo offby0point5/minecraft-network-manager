@@ -2,7 +2,7 @@ package com.github.offby0point5.mc.plugin.hybrid.servermanager.groups;
 
 import com.github.offby0point5.mc.plugin.hybrid.servermanager.ServerFlags;
 import com.github.offby0point5.mc.plugin.hybrid.servermanager.ServerGroups;
-import com.github.offby0point5.mc.plugin.hybrid.servermanager.ServerPorts;
+import com.github.offby0point5.mc.plugin.hybrid.servermanager.ServerAddresses;
 import com.github.offby0point5.mc.plugin.hybrid.servermanager.ServermanagerVelocity;
 import com.pequla.server.ping.ServerPing;
 import com.pequla.server.ping.StatusResponse;
@@ -22,7 +22,7 @@ public class ServerData {
     private static final Map<String, Integer> serverPingFailCounters = new HashMap<>();
 
     public final String name;
-    public final ServerPorts ports;
+    public final ServerAddresses ports;
     public ServerGroups groups = new ServerGroups("none");
     public ServerFlags flags = new ServerFlags();
 
@@ -30,7 +30,7 @@ public class ServerData {
         ServermanagerVelocity.proxy.getScheduler().buildTask(ServermanagerVelocity.plugin, () -> {
             for (ServerData server : serverNameDataMap.values()) {
                 if (server.name.equals("fallback")) return;  // do not ping fallback server
-                InetSocketAddress address = new InetSocketAddress(server.ports.game);
+                InetSocketAddress address = server.ports.game;
                 try {
                     ServerPing serverPing = new ServerPing(address);
                     StatusResponse response = serverPing.fetchData();
@@ -54,7 +54,7 @@ public class ServerData {
         }).delay(10L, TimeUnit.SECONDS).repeat(5L, TimeUnit.SECONDS).schedule();
     }
 
-    public ServerData(String serverId, ServerPorts ports) {
+    public ServerData(String serverId, ServerAddresses ports) {
         this.name = serverId;
         this.ports = ports;
         serverNameDataMap.put(serverId, this);

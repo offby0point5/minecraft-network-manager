@@ -74,9 +74,9 @@ public class ProxyApi {
     /**
      * Requests initial registration on the proxy. Should only be sent once.
      * @param serverName The name this server should have on the proxy
-     * @param ports      The ServerPorts object describing all ports this server provides
+     * @param ports      The ServerAddresses object describing all ports this server provides
      */
-    public static void putServerPorts(String serverName, ServerPorts ports) {
+    public static void putServerPorts(String serverName, ServerAddresses ports) {
         Unirest.put(ResourceUrls.HOST+ResourceUrls.UNIREST_PORTS)
                 .routeParam("id", serverName)
                 .body(ports).asEmpty();

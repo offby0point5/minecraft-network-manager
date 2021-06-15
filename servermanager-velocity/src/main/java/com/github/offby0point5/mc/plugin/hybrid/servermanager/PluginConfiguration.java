@@ -91,7 +91,7 @@ public class PluginConfiguration {
             // Add all servers from velocity config
             for (RegisteredServer server : ServermanagerVelocity.proxy.getAllServers()) {
                 new ServerData(server.getServerInfo().getName(),
-                        new ServerPorts(server.getServerInfo().getAddress().getPort(), null, null));
+                        new ServerAddresses(server.getServerInfo().getAddress(), null, null));
 
             }
 

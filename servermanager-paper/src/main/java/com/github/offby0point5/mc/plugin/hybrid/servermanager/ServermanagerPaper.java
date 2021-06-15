@@ -7,6 +7,7 @@ import org.bukkit.event.server.ServerListPingEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import unirest.UnirestException;
 
+import java.net.InetSocketAddress;
 import java.nio.file.Paths;
 import java.util.concurrent.TimeUnit;
 
@@ -48,7 +49,9 @@ public final class ServermanagerPaper extends JavaPlugin implements Listener {
 
                     this.getLogger().warning("Proxy did not send ping! Try resending data!"); // todo remove
                     ProxyApi.putServerPorts(config.getName(),
-                            new ServerPorts(this.getServer().getPort(), null, null)); // todo get query and rcon ports too
+                            new ServerAddresses(
+                                    new InetSocketAddress(this.getServer().getIp(), this.getServer().getPort()),
+                                    null, null)); // todo get query and rcon ports too
                     ProxyApi.putServerGroups(config.getName(),
                             new ServerGroups(config.getMainGroup(), config.getAllGroups()));
                     this.getLogger().info("Successfully sent server data.");

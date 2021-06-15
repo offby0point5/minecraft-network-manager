@@ -1,6 +1,6 @@
 ### Servermanager
 
-This repo is just hacked together by someone who does not know anything about code quality or development strategies.
+This repo is thrown together by someone who does not know anything about code quality or development strategies.
 
 I simply try to build something that suits my needs for a private network.
 
