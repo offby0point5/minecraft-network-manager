@@ -33,8 +33,7 @@ public class ServerData {
                 InetSocketAddress address = server.ports.game;
                 try {
                     ServerPing serverPing = new ServerPing(address);
-                    StatusResponse response = serverPing.fetchData();
-                    // todo use the response data for ServerData (maybe use it from servers directly)
+                    serverPing.fetchData();
                     ServermanagerVelocity.plugin.logger.debug("Server "+address+" online.");
                     serverPingFailCounters.put(server.name, 0);
                 } catch (ConnectException e) {

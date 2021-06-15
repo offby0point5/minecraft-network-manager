@@ -32,7 +32,6 @@ public class PluginConfiguration {
     }
 
     public static PluginConfiguration read(Path path) {
-        // todo resaveNeeded ?
         URL defaultConfigLocation = PluginConfiguration.class.getClassLoader()
                 .getResource("default-config.toml");
         if (defaultConfigLocation == null) {

@@ -10,8 +10,6 @@ import net.kyori.adventure.text.Component;
  * This class handles events relevant for the server groups
  */
 public class GroupEvents {
-    // todo event when player requests server change
-
     /**
      * Execute the KickRule
      */
@@ -22,7 +20,7 @@ public class GroupEvents {
         ServerGroup group = ServerGroup.getInstance(mainGroupName);  // if group does not exist, create it
         ServerGroup newGroup = group.getKickGroup(event.getPlayer());
         if (newGroup == null) {
-            // todo do not kick from proxy if reason is not server shutdown or restart
+            // do not kick from proxy if reason is not server shutdown or restart
             Component reason = event.getServerKickReason().orElse(Component.empty());
             if (reason.contains(Component.text("Server is restarting"))
                     || reason.contains(Component.text("Server closed"))) {

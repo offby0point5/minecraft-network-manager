@@ -10,6 +10,7 @@ import unirest.UnirestException;
 import java.net.InetSocketAddress;
 import java.nio.file.Paths;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
 
 public final class ServermanagerPaper extends JavaPlugin implements Listener {
     public static ServermanagerPaper plugin = null;
@@ -47,11 +48,11 @@ public final class ServermanagerPaper extends JavaPlugin implements Listener {
                     sleepTime = sleepTimeFail;
                     if (isPinged) continue;
 
-                    this.getLogger().warning("Proxy did not send ping! Try resending data!"); // todo remove
+                    this.getLogger().log(Level.OFF, "Proxy did not send ping! Try resending data!");
                     ProxyApi.putServerPorts(config.getName(),
                             new ServerAddresses(
                                     new InetSocketAddress(this.getServer().getIp(), this.getServer().getPort()),
-                                    null, null)); // todo get query and rcon ports too
+                                    null, null));
                     ProxyApi.putServerGroups(config.getName(),
                             new ServerGroups(config.getMainGroup(), config.getAllGroups()));
                     this.getLogger().info("Successfully sent server data.");

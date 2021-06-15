@@ -1,7 +1,6 @@
 package com.github.offby0point5.mc.plugin.hybrid.servermanager.groups;
 
 import net.md_5.bungee.api.config.ServerInfo;
-import net.md_5.bungee.api.connection.Server;
 import net.md_5.bungee.api.event.ServerConnectEvent;
 import net.md_5.bungee.api.event.ServerKickEvent;
 import net.md_5.bungee.api.plugin.Listener;
@@ -11,8 +10,6 @@ import net.md_5.bungee.event.EventHandler;
  * This class handles events relevant for the server groups
  */
 public class GroupEvents implements Listener {
-    // todo event when player requests server change
-
     /**
      * Execute the KickRule
      */
