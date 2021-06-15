@@ -4,6 +4,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+@Deprecated
 public class MenuData {
     public final Entry headerEntry;
     public final LinkedHashMap<String, Entry> entries = new LinkedHashMap<>();  // server/group name -> displaying item
