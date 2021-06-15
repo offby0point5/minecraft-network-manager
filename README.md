@@ -10,4 +10,6 @@ The current version got a (really bulky) feature of a server menu.
 
 ### ToDo
 - [ ] Make a better API for more possible server switching methods
+- [ ] Commands for joining server groups and servers
+- [ ] Commands for listing server groups and servers
 - [ ] Write better code
