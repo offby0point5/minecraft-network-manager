@@ -58,6 +58,27 @@ public class ProxyApi {
                 .asObject(MenuData.class).getBody();
     }
 
+    /**
+     * Requests server data from the proxy.
+     * @param serverName The name of the server to get information about
+     */
+    public static ServerAddresses getServerPorts(String serverName) {
+        return Unirest.get(ResourceUrls.HOST+ResourceUrls.UNIREST_PORTS)
+                .routeParam("id", serverName)
+                .asObject(ServerAddresses.class).getBody();
+    }
+
+    public static ServerGroups getServerGroups(String serverName) {
+        return Unirest.get(ResourceUrls.HOST+ResourceUrls.UNIREST_GROUPS)
+                .routeParam("id", serverName)
+                .asObject(ServerGroups.class).getBody();
+    }
+
+    public static ServerFlags getServerFlags(String serverName) {
+        return Unirest.get(ResourceUrls.HOST+ResourceUrls.UNIREST_FLAGS)
+                .routeParam("id", serverName).asObject(ServerFlags.class).getBody();
+    }
+
     // POST requests ================================================
     public static void postSendPlayerServer(String serverName, String playerName) {
         Unirest.post(ResourceUrls.HOST+ResourceUrls.UNIREST_SEND_PLAYER_TO_SERVER)

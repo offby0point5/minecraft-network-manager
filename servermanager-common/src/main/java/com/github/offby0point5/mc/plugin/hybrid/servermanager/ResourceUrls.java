@@ -6,9 +6,9 @@ public class ResourceUrls {
     public static final String SERVERS = "/servers";  // get all registered server IDs
     @Deprecated public static final String MENU_MAIN = "/menu";  // get main page server menu entries
     @Deprecated public static final String MENU_GROUP = "/menu/:id";  // get group page server menu entries for group with this ID
-    public static final String FLAGS = "/server/:id/flags";  // set flags for server with this ID
-    public static final String GROUPS = "/server/:id/groups";  // set groups for server with this ID
-    public static final String PORTS = "/server/:id/ports";  // set ports for server with this ID
+    public static final String FLAGS = "/server/:id/flags";  // set/get flags for server with this ID
+    public static final String GROUPS = "/server/:id/groups";  // set/get groups for server with this ID
+    public static final String PORTS = "/server/:id/ports";  // set/get ports for server with this ID
     public static final String DELETE = "/server/:id";  // unregister server with this ID
 
     public static final String SEND_PLAYER_TO_GROUP = "/send/group/:player/:id";  // send player to group with this ID

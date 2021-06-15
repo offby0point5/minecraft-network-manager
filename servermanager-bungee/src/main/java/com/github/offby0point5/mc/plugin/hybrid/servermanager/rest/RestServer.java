@@ -35,9 +35,15 @@ public class RestServer {
             app.routes(() -> {
                 get(ResourceUrls.SERVERS, Resources::getServers);
 
+                get(ResourceUrls.PORTS, ServerGetters::getServerPorts);
                 put(ResourceUrls.PORTS, Resources::putPorts);
+
+                get(ResourceUrls.GROUPS, ServerGetters::getServerGroups);
                 put(ResourceUrls.GROUPS, Resources::putGroups);
+
+                get(ResourceUrls.FLAGS, ServerGetters::getServerFlags);
                 put(ResourceUrls.FLAGS, Resources::putFlags);
+
                 delete(ResourceUrls.DELETE, Resources::deleteServer);
 
                 get(ResourceUrls.MENU_MAIN, Resources::getMenuMain);
