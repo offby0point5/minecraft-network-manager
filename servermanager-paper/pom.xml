@@ -82,23 +82,6 @@
             <artifactId>adventure-text-minimessage</artifactId>
             <version>4.1.0-SNAPSHOT</version>
         </dependency>
-        <!-- http client -->
-        <dependency>
-            <groupId>io.github.openunirest</groupId>
-            <artifactId>open-unirest-java</artifactId>
-            <version>3.3.06</version>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>2.10.3</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.module</groupId>
-            <artifactId>jackson-module-paranamer</artifactId>
-            <version>2.10.3</version>
-        </dependency>
         <!-- Configuration library -->
         <dependency>
             <groupId>com.electronwill.night-config</groupId>
@@ -109,6 +92,12 @@
             <groupId>com.electronwill.night-config</groupId>
             <artifactId>toml</artifactId>
             <version>3.6.3</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.offby0point5.mc.plugin.hybrid</groupId>
+            <artifactId>servermanager-backend</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 </project>

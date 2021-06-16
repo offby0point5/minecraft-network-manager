@@ -16,4 +16,27 @@
         <maven.compiler.target>11</maven.compiler.target>
     </properties>
 
+    <dependencies>
+        <!-- http client -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.module</groupId>
+            <artifactId>jackson-module-paranamer</artifactId>
+            <version>2.10.3</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.github.openunirest</groupId>
+            <artifactId>open-unirest-java</artifactId>
+            <version>3.3.06</version>
+            <scope>compile</scope>
+        </dependency>
+        <!-- common project code -->
+        <dependency>
+            <groupId>com.github.offby0point5.mc.plugin.hybrid</groupId>
+            <artifactId>servermanager-common</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
+
 </project>
