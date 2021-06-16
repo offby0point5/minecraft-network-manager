@@ -25,6 +25,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.*;
 import java.util.stream.Collectors;
 
+// todo don't use deprecated code
 public class ServerMenu implements Listener {
     private static OutlinePane backgroundPane = null;
     private static ChestGui gui = null;

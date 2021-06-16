@@ -51,5 +51,7 @@
         <module>servermanager-paper</module>
         <module>servermanager-velocity</module>
         <module>servermanager-bungee</module>
+        <module>servermanager-minestom</module>
+        <module>servermanager-backend</module>
     </modules>
 </project>
