@@ -9,19 +9,69 @@ import unirest.UnirestException;
 
 import java.net.InetSocketAddress;
 import java.nio.file.Paths;
-import java.util.concurrent.TimeUnit;
+import java.util.Set;
 import java.util.logging.Level;
 
 public final class ServermanagerPaper extends JavaPlugin implements Listener {
     public static ServermanagerPaper plugin = null;
-    private static Thread serverDataSender;
-    private static boolean isPinged = false;
-    private static boolean running = true;
+    public static DataSender dataSender;
 
     public static PluginConfiguration config;
 
     public ServermanagerPaper() {
         plugin = this;
+        ILogger iLogger = new ILogger() {
+            @Override
+            public void debug(String string) {
+                plugin.getLogger().log(Level.OFF, string);
+            }
+
+            @Override
+            public void info(String string) {
+                plugin.getLogger().info(string);
+            }
+
+            @Override
+            public void warning(String string) {
+                plugin.getLogger().warning(string);
+            }
+
+            @Override
+            public void error(String string) {
+                plugin.getLogger().log(Level.SEVERE, string);
+            }
+
+            @Override
+            public void error(String string, Throwable e) {
+                plugin.getLogger().log(Level.SEVERE, string, e);
+            }
+
+        };
+
+        IDataProvider iDataProvider = new IDataProvider() {
+            @Override
+            public String getName() {
+                return config.getName();
+            }
+
+            @Override
+            public String getMainGroup() {
+                return config.getMainGroup();
+            }
+
+            @Override
+            public Set<String> getAllGroups() {
+                return config.getAllGroups();
+            }
+
+            @Override
+            public InetSocketAddress getGameAddress() {
+                return new InetSocketAddress(plugin.getServer().getIp(),
+                        plugin.getServer().getPort());
+            }
+        };
+
+        dataSender = new DataSender(iLogger, iDataProvider);
     }
 
     @Override
@@ -34,48 +84,16 @@ public final class ServermanagerPaper extends JavaPlugin implements Listener {
         // Add the event listeners
         this.getServer().getPluginManager().registerEvents(new ServerMenu(), this);
         this.getServer().getPluginManager().registerEvents(this, this);
-
-        // Start the data sender thread
-        serverDataSender = new Thread(() -> {
-            final long sleepTimeFail = 5;  // Seconds
-            final long sleepTimeSuccess = 10;  // Seconds
-            long sleepTime = sleepTimeFail;
-
-            while (running) {
-                try {
-                    isPinged = false;  // reset pinged status
-                    TimeUnit.SECONDS.sleep(sleepTime);
-                    sleepTime = sleepTimeFail;
-                    if (isPinged) continue;
-
-                    this.getLogger().log(Level.OFF, "Proxy did not send ping! Try resending data!");
-                    ProxyApi.putServerPorts(config.getName(),
-                            new ServerAddresses(
-                                    new InetSocketAddress(this.getServer().getIp(), this.getServer().getPort()),
-                                    null, null));
-                    ProxyApi.putServerGroups(config.getName(),
-                            new ServerGroups(config.getMainGroup(), config.getAllGroups()));
-                    this.getLogger().info("Successfully sent server data.");
-                    sleepTime = sleepTimeSuccess;
-                } catch (UnirestException e) {
-                    if (e.getCause() instanceof HttpHostConnectException) {
-                        this.getLogger().warning("Proxy is not reachable!");
-                    }
-                } catch (InterruptedException ignore) { }
-            }
-        });
-        serverDataSender.start();
+        dataSender.start();
     }
 
     @Override
     public void onDisable() {
         // Plugin shutdown logic
         try {
+            dataSender.stop();
             ProxyApi.deleteServer(config.getName());
             ProxyApi.shutdown();
-
-            running = false;
-            serverDataSender.join();
         } catch (UnirestException e) {
             if (e.getCause() instanceof HttpHostConnectException) {
                 this.getLogger().warning("Proxy is not reachable!");
@@ -87,6 +105,6 @@ public final class ServermanagerPaper extends JavaPlugin implements Listener {
 
     @EventHandler
     public static void onServerPing(ServerListPingEvent event) {
-        isPinged = true;
+        dataSender.gotPinged();
     }
 }
