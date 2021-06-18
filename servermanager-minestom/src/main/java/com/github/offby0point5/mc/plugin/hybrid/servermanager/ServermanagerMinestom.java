@@ -15,39 +15,46 @@ import java.util.UUID;
 
 public class ServermanagerMinestom extends Extension {
     private DataSender dataSender;
+    private final ServermanagerMinestom self;
 
     private String name = UUID.randomUUID().toString();  // todo read from config
     private String mainGroup = "lobby";  // todo read from config
     private Set<String> allGroups = Collections.emptySet();  // todo read from config
 
-    private EventNode<Event> rootEventNode = this.getEventNode();
+    private final EventNode<Event> rootEventNode;
+
+    private ServermanagerMinestom() {
+        super();
+        self = this;
+        rootEventNode = this.getEventNode();
+    }
 
     @Override
     public void initialize() {
         ILogger iLogger = new ILogger() {
             @Override
             public void debug(String string) {
-                MinecraftServer.LOGGER.debug(string);
+                self.getLogger().debug(string);
             }
 
             @Override
             public void info(String string) {
-                MinecraftServer.LOGGER.info(string);
+                self.getLogger().info(string);
             }
 
             @Override
             public void warning(String string) {
-                MinecraftServer.LOGGER.warn(string);
+                self.getLogger().warn(string);
             }
 
             @Override
             public void error(String string) {
-                MinecraftServer.LOGGER.error(string);
+                self.getLogger().error(string);
             }
 
             @Override
             public void error(String string, Throwable e) {
-                MinecraftServer.LOGGER.error(string, e);
+                self.getLogger().error(string, e);
             }
         };
 
@@ -68,6 +75,7 @@ public class ServermanagerMinestom extends Extension {
             }
 
             @Override
+            @SuppressWarnings("UnstableApiUsage")
             public InetSocketAddress getGameAddress() {
                 return MinecraftServer.getNettyServer().getServerChannel().localAddress();
             }
@@ -75,7 +83,7 @@ public class ServermanagerMinestom extends Extension {
 
         dataSender = new DataSender(iLogger, iDataProvider);
         dataSender.start();
-        MinecraftServer.LOGGER.info("Servermanager loaded");
+        this.getLogger().info("ServerManager loaded");
 
         rootEventNode.addListener(ServerListPingEvent.class, serverListPingEvent -> {
             if (serverListPingEvent.getPingType().equals(ServerListPingType.OPEN_TO_LAN)) return;
@@ -92,6 +100,6 @@ public class ServermanagerMinestom extends Extension {
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (UnirestException ignore) { }
-        MinecraftServer.LOGGER.info("Servermanager unloaded");
+        this.getLogger().info("ServerManager unloaded");
     }
 }
