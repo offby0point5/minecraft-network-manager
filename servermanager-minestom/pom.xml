@@ -96,6 +96,12 @@
             <artifactId>jackson-module-paranamer</artifactId>
             <version>2.10.3</version>
         </dependency>
+        <!-- inventory gui -->
+        <dependency>
+            <groupId>com.github.c-128</groupId>
+            <artifactId>guilib</artifactId>
+            <version>ddad9d05fa</version>
+        </dependency>
         <!-- common backend server code -->
         <dependency>
             <groupId>com.github.offby0point5.mc.plugin.hybrid</groupId>

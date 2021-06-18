@@ -89,6 +89,8 @@ public class ServermanagerMinestom extends Extension {
             if (serverListPingEvent.getPingType().equals(ServerListPingType.OPEN_TO_LAN)) return;
             dataSender.gotPinged();
         });
+
+        new ServerMenu(rootEventNode);
     }
 
     @Override
