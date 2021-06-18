@@ -1,4 +1,5 @@
 {
   "entrypoint": "com.github.offby0point5.mc.plugin.hybrid.servermanager.ServermanagerMinestom",
-  "name": "ServerManager"
+   "name": "ServerManager",
+  "version": "ALPHA"
 }
