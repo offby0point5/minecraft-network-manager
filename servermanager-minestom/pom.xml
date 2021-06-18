@@ -59,14 +59,7 @@
                 </exclusion>
             </exclusions>
         </dependency>
-        <!-- do i need this? -->
-        <dependency>
-            <groupId>org.jboss.shrinkwrap.resolver</groupId>
-            <artifactId>shrinkwrap-resolver-depchain</artifactId>
-            <version>3.1.4</version>
-            <type>pom</type>
-        </dependency>
-        <!-- Configuration -->
+         <!-- Configuration -->
         <dependency>
             <groupId>com.electronwill.night-config</groupId>
             <artifactId>core</artifactId>
@@ -78,23 +71,6 @@
             <artifactId>toml</artifactId>
             <version>3.6.3</version>
             <scope>compile</scope>
-        </dependency>
-        <!-- http client -->
-        <dependency>
-            <groupId>io.github.openunirest</groupId>
-            <artifactId>open-unirest-java</artifactId>
-            <version>3.3.06</version>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>2.10.3</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.module</groupId>
-            <artifactId>jackson-module-paranamer</artifactId>
-            <version>2.10.3</version>
         </dependency>
         <!-- inventory gui -->
         <dependency>
