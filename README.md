@@ -1,4 +1,6 @@
-# Use [mcredis](https://github.com/off-by-0point5/mcredis)
+# Use [mcredis](https://github.com/off-by-0point5/mcredis) not this repo!
+---
+---
 
 ### Servermanager
 
