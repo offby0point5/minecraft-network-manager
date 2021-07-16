@@ -1,3 +1,5 @@
+# Use [mcredis](https://github.com/off-by-0point5/mcredis)
+
 ### Servermanager
 
 This repo is thrown together by someone who does not know anything about code quality or development strategies.
